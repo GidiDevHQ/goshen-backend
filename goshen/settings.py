@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from datetime import timedelta
 
 # Explicitly point to .env file
 load_dotenv(os.path.join(Path(__file__).resolve().parent.parent, '.env'))
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt',
     'corsheaders',
     'store',
 ]
@@ -141,10 +143,10 @@ CORS_ALLOWED_ORIGINS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
 }
 
@@ -154,4 +156,12 @@ JAZZMIN_SETTINGS = {
     'site_brand': 'Goshen Accessories',
     'welcome_sign': 'Welcome to Goshen Accessories Admin',
     'copyright': 'Goshen Accessories',
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME' : timedelta(days=1),
+
+    'REFRESH_TOKEN_LIFETIME' : timedelta(days=7),
+
+    'ROTATE_REFRESH_TOKEN': True,
 }
